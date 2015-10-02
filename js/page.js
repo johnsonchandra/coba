@@ -1,0 +1,5 @@
+$(function(){
+	
+	parseWidget();
+	
+}); // end $(function(){
