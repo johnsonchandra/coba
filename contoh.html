@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="keywords" content="">
+		<meta name="author" content="">
+		<meta name="version" content="Bootstrap 3.3.5">
+		<title>Portal Homepage</title>
+
+		<link href="styles/bootstrap.min.css" rel="stylesheet">
+		<link href="styles/bootstrap-extended.css" rel="stylesheet">
+		<link href="styles/bootstrap-extended-theme.css" rel="stylesheet">
+
+		<!-- [if lt IE 9]>
+			<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif] -->
+
+		<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+		<link rel="icon" href="images/favicon.ico">
+	</head>
+	<body>
+
+		<div 
+			data-wp-widget = 
+			'{
+				"title"				: "Ini Portal gw loh",
+				"URL"				: "header.html",
+				"api_name"			: "getListMenu",
+				"api_params_in" 	: 
+				{
+					"viewSize"		: 3,
+					"viewIndex" 	: 0,
+					"enforce"		: false
+				},
+				"api_params_out"	: 
+				{
+					"field_name"	:"entityList"
+				},
+				"field_mapping" 	: 
+				{
+					"menu_link"	: {
+						"href"			: "brand.html",
+						"href_type"		: "static",
+						"href_params"	: "brandId",
+						"text"			: "brandName"
+					}
+				}
+			}'
+		>
+		</div>
+ 
+ 
+		<main role="main" class="main-navbar-fixed-top">
+		
+
+			<div class="section">
+				<div 
+					data-wp-widget = 
+					'{
+						"title"				: "Portfolio",
+						"URL"				: "card_profile.html",
+						"api_name"			: "getOneRecord",
+						"api_params_in" 	: 
+						{
+							"bizProductId" 	: "WP.12648",
+							"enforce"		: true
+						},
+						"api_params_out"	: 
+						{
+							"field_name"	:"BizProduct"
+						},
+						"field_mapping" 	: 
+						{
+							"gambar"	: {
+								"src"	: "trxTimestamp",
+								"alt"	: "productName",
+								"text"	: "productPrice"
+							},
+							"judul"		: {
+								"text"	: "productName"
+							},
+							"sub_judul"	: {
+								"text"	: "productName"
+							},
+							"keterangan": {
+								"text"	: "productSku"
+							},
+							"text_link"	: {
+								"href"			: "mainPhoneNumber",
+								"href_type"		: "dynamic",
+								"href_params"	: "typeId, statusId",
+								"text"			: "createdByUserLogin"
+							}
+						}
+					}'
+					>
+				</div>
+			</div><!-- /.section -->
+
+
+			<div class="section">
+				<div 
+					data-wp-widget = 
+					'{
+						"title"				: "Ini list parent children",
+						"URL"				: "list_li_parentchildren.html",
+						"api_name"			: "ecmcGetBizCategoryProductList",
+						"api_params_in" 	: 
+						{
+							"bizId" 		: "paveels",
+							"viewIndex"		: -1,
+							"viewSize"		: -1,
+							"enforce"		: true
+						},
+						"api_params_out"	: 
+						{
+							"field_name"	:"entityList",
+							"field_key"		: "categoryId",
+							"field_parent"	: "parentCategoryId"
+						},
+						"field_mapping" 	: 
+						{
+							"parent_name": {
+								"text"	: "categoryName"
+							},
+							"parent_link"	: {
+								"href"			: "category.html",
+								"href_type"		: "static",
+								"href_params"	: "typeId, statusId",
+								"text"			: "categoryName"
+							},
+							"child_link"	: {
+								"href"			: "trxTimestamp",
+								"href_type"		: "dynamic",
+								"href_params"	: "typeId, statusId",
+								"text"			: "categoryName"
+							}
+						}
+					}'
+					>
+				</div>
+			</div><!-- /.section -->
+
+<!--
+			<div class="section">
+				<div data-wp-widget-title='Product Category List' data-wp-widget-name='list_card_imgSquare.html' data-wp-api-name='ecmcGetBizCategoryProductList' data-wp-api-ecmcGetBizCategoryProductList='{"enforce":true,"viewSize":5,"viewIndex":0}'>
+				</div>
+			</div><!-- /.section -->
+
+<!-- 
+			<div class="section">
+				<div 
+					data-wp-widget-title='Brand List' 
+					data-wp-widget-name='list_card_imgRound.html' 
+					data-wp-api-name='ecmcGetBizBrandList' 
+					data-wp-api-ecmcGetBizBrandList='{"bizId":"paveels"}'
+				>
+				</div>
+			</div><!-- /.section -->
+
+
+		</main>
+
+		<div 
+		data-wp-widget = 
+			'{
+				"URL"				: "footer.html"
+			}'
+		>
+		</div>
+
+
+		<script src="scripts/jquery-2.1.4.js"></script>
+		<script src="scripts/bootstrap.js"></script>
+		<script src="scripts/modernizr.js"></script>
+		<script src="portal/js/common.js"></script>
+		<script src="portal/js/contoh.js"></script>
+		
+	</body>
+</html>
