@@ -90,18 +90,77 @@
 
 		<script src="jquery-2.1.4/jquery-2.1.4.js"></script>
 		<script src="bootstrap-3.3.5-dist/js/bootstrap.js"></script>
-		<script src="aws/aws-sdk-2.1.44.min.js"></script>
+		<script src="aws/aws-sdk-2.2.6.min.js"></script>
 		<script src="ie/ie10-viewport-bug-workaround.js"></script>
 		
 		<script src="js/common.js"></script>
 		<script src="js/page.js"></script>
 		
-	<!-- Script to Activate the Carousel -->
-	    <script>
-		    $('.carousel').carousel({
+		<script type="text/javascript">
+			//	Script to Activate the Carousel
+			$('.carousel').carousel({
 		        interval: 5000 //changes the speed
 		    })
-	    </script>
+
+		    AWS.config.region = 'us-east-1';
+			
+			
+			var params = {
+				IdentityPoolId: "us-east-1:b224255c-d08c-4532-b2d1-ff9cf734eaa6"
+			};
+			 
+			// set the Amazon Cognito region
+			AWS.config.region = 'us-east-1';
+			// initialize the Credentials object with our parameters
+			AWS.config.credentials = new AWS.CognitoIdentityCredentials(params);
+
+			// We can set the get method of the Credentials object to retrieve
+			// the unique identifier for the end user (identityId) once the provider
+			// has refreshed itself
+			AWS.config.credentials.get(function(err) {
+			    if (err) {
+			        console.log("Error: "+err);
+			        return;
+			    }
+			    console.log("Cognito Identity Id: " + AWS.config.credentials.identityId);
+			 
+			    // Other service clients will automatically use the Cognito Credentials provider
+			    // configured in the JavaScript SDK.
+			    var cognitoSyncClient = new AWS.CognitoSync();
+			    cognitoSyncClient.listDatasets({
+			        IdentityId: AWS.config.credentials.identityId,
+			        IdentityPoolId: "us-east-1:b224255c-d08c-4532-b2d1-ff9cf734eaa6"
+			    }, function(err, data) {
+			        if ( !err ) {
+			            console.log(JSON.stringify(data));
+			        }
+			    });
+			});
+
+
+		    var lambda = new AWS.Lambda();
+					    
+		    var params = {
+				FunctionName: 'MyFunction',
+				// ClientContext: 'STRING_VALUE',
+				// InvocationType: 'Event | RequestResponse | DryRun',
+				LogType: 'Tail',
+				Payload:'{"firstName":"nama depan", "lastName":"nama belakang"}'
+			};
+
+		    lambda.invoke(params, function(err, data) {
+				if (err) console.log(err, err.stack); // an error occurred
+				else {
+					console.log("berhasil");
+					console.log("data:");
+					console.log(data);	// successful response
+					console.log("result:");
+					var result = JSON.parse(data.Payload);
+					console.log(result);
+				}
+			}); 
+		
+		</script>
 		
 	</body>
 </html>
