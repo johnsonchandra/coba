@@ -1,0 +1,48 @@
+<html>
+<head>
+  <title>Sample Pages</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <h1>Sample Pages</h1>
+  <div id="info">
+  Choose Your Option
+  </div>
+	<ul>
+		<li><a href="signup.html">Sign Up</a>
+		<li><a href="login.html">Login</a>
+		<li><a href="changePassword.html">Change Password</a>
+		<li><a href="lostPassword.html">Password Lost</a>
+	</ul>
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.28.min.js"></script>
+
+		<script>
+		AWS.config.region = 'us-east-1';
+		AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+			IdentityPoolId: 'us-east-1:b224255c-d08c-4532-b2d1-ff9cf734eaa6'
+		});
+		
+		var creds = AWS.config.credentials;
+		creds.params.IdentityId = 'us-east-1:41a2fd09-8be4-41ff-8aaa-164477905986';
+		creds.params.Logins = {
+			'cognito-identity.amazonaws.com': 'eyJraWQiOiJ1cy1lYXN0LTExIiwidHlwIjoiSldTIiwiYWxnIjoiUlM1MTIifQ.eyJzdWIiOiJ1cy1lYXN0LTE6NDFhMmZkMDktOGJlNC00MWZmLThhYWEtMTY0NDc3OTA1OTg2IiwiYXVkIjoidXMtZWFzdC0xOmIyMjQyNTVjLWQwOGMtNDUzMi1iMmQxLWZmOWNmNzM0ZWFhNiIsImFtciI6WyJhdXRoZW50aWNhdGVkIiwiZGV2ZWxvcGVyUHJvdmlkZXJOYW1lU2VuZGlyaSIsImRldmVsb3BlclByb3ZpZGVyTmFtZVNlbmRpcmk6dXMtZWFzdC0xOmIyMjQyNTVjLWQwOGMtNDUzMi1iMmQxLWZmOWNmNzM0ZWFhNjpqb2huc29uLmNoYW5kcmFAZ21haWwuY29tIl0sImlzcyI6Imh0dHBzOi8vY29nbml0by1pZGVudGl0eS5hbWF6b25hd3MuY29tIiwiZXhwIjoxNDQ0NjUyNTk2LCJpYXQiOjE0NDQ2NTE2OTZ9.b4LkzF4nNXO82p1ywku0vTgqyubw3Zr_HPSZ5zjI3QUpRLVfmgyHgrcxoqwDjrIFdI7ep-4W7n-in0afqjALIjGNpCHALleTHmsK6NiJZ25rpEisMDa7Xgwut8dD9MR33kZKZURKk8wDGuXzyEzr1fO8AQJROj8UNf71f024dvpOwDeBDrqtOJH547ZAKizpOeQaqJInH-vKlOKjTNhVKVwdqJvqgX_vG7VkzfnHbyHi4Uuxdt5MOxQLuoRw4WgJmy8NTMumK7Umb4uQV81ZH6XLjh3EHOwVZMtWiWPio1YL_DU6xw5dX6KdQfXfbItOxEkXVeFtndHCkrWc8nQZtQ'
+		};
+		
+
+		var cognito = new AWS.CognitoIdentity();
+		var cognitoParams = {IdentityId: 'us-east-1:41a2fd09-8be4-41ff-8aaa-164477905986'};
+		
+		cognito.describeIdentity(cognitoParams, function(err, data) {
+			if (err) {
+				console.log(err);
+			}else{
+				console.log('after calling describeIdentity');
+				console.log(data);				
+			}
+
+		});
+
+		
+		</script>
+	</body>
+</html>

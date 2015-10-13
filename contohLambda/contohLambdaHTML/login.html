@@ -1,0 +1,121 @@
+<html>
+	<head>
+		<title>Sample Login Page</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+
+		<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.28.min.js"></script>
+
+		<script>
+			AWS.config.region = 'us-east-1';
+			AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+				IdentityPoolId: 'us-east-1:b224255c-d08c-4532-b2d1-ff9cf734eaa6'
+			});
+			var lambda = new AWS.Lambda();
+		</script>
+
+		<h1>Sample Login Page</h1>
+
+		<div id="info">
+			Login
+		</div>
+
+		<table>
+			<tr>
+				<td>Email</td>
+				<td><input type="email" id="email" size="20">
+			</tr>
+			<tr>
+				<td>Password</td>
+				<td><input type="password" id="password" size="20">
+			</tr>
+			<tr>
+				<td colspan="2">
+					<button type="submit" id="login-button">Login</button>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" class="center">
+					<a href="index.html">Back</a>
+				</td>
+			</tr>
+		</table>
+
+		<script>
+			var info = document.getElementById('info');
+			var email = document.getElementById('email');
+			var password = document.getElementById('password');
+			var loginButton = document.getElementById('login-button');
+
+			loginButton.addEventListener('click', function() {
+				info.innerHTML = 'Login...';
+				if (email.value == null || email.value == '') {
+					info.innerHTML = 'Please specify your email address.';
+				} else if (password.value == null || password.value == '') {
+					info.innerHTML = 'Please specify a password.';
+				} else {
+					var input = {
+						email: email.value,
+						password: password.value
+					};
+					lambda.invoke({
+						FunctionName: 'CobaLambdaLogin',
+						Payload: JSON.stringify(input)
+					}, function(err, data) {
+						if (err) console.log(err, err.stack);
+						else {
+							var output = JSON.parse(data.Payload);
+							if (!output.login) {
+								info.innerHTML = '<b>Not</b> logged in';
+								console.log('TIDAK BERHASIL');
+								var creds = AWS.config.credentials;
+								console.log('ini RoleArn');
+								console.log(creds.params.RoleArn);
+								console.log('ini creds semuanya');
+								console.log(creds);
+							} else {
+								info.innerHTML = 'Logged in with IdentityId: ' + output.identityId + '<br>';
+								var creds = AWS.config.credentials;
+								creds.params.IdentityId = output.identityId;
+								creds.params.IdentityPoolId = 'us-east-1:b224255c-d08c-4532-b2d1-ff9cf734eaa6';
+								creds.params.Logins = {
+									'cognito-identity.amazonaws.com': output.token
+								};
+								creds.expired = true;
+								
+								// Do something with the authenticated role
+								console.log('berhasil login dan sudah diexpired');
+								console.log('ini RoleArn');
+								console.log(creds.params.RoleArn);
+								
+
+								console.log('IdentityId');
+								console.log(output.identityId);
+
+								console.log('output.token');
+								console.log(output.token);
+
+								
+								console.log('ini creds semuanya');
+								console.log(creds);
+								
+								
+								var cognito = new AWS.CognitoIdentity();
+								var cognitoParams = {IdentityId: output.identityId};
+								
+								cognito.describeIdentity(cognitoParams, function(err, data) {
+									if (err) return fn(err); 
+									console.log('after calling describeIdentity');
+									console.log(data);
+								});
+								
+							}
+						}
+					});
+				}
+			});
+
+		</script>
+	</body>
+</html>
